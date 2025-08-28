@@ -44,7 +44,6 @@ export default function AddEntryScreen() {
   useEffect(() => {
     (async () => {
       const stored = await getTodayMeals();
-      setMeals(stored && stored.length > 0 ? stored : [{ type: 'Breakfast', protein: 0, fat: 0, carbs: 0, fiber: 0, calories: 0 }]);
     })();
   }, []);
 
