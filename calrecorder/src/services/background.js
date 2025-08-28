@@ -4,14 +4,19 @@ import { performDailyRollover } from './rollover';
 
 export const ROLLOVER_TASK = 'daily-rollover-task';
 
-TaskManager.defineTask(ROLLOVER_TASK, async () => {
-  try {
-    await performDailyRollover();
-    return BackgroundFetch.BackgroundFetchResult.NewData;
-  } catch (e) {
-    return BackgroundFetch.BackgroundFetchResult.Failed;
-  }
-});
+// Guard task definition so Expo Go or unsupported runtimes don't crash on import
+try {
+  TaskManager.defineTask(ROLLOVER_TASK, async () => {
+    try {
+      await performDailyRollover();
+      return BackgroundFetch.BackgroundFetchResult.NewData;
+    } catch (e) {
+      return BackgroundFetch.BackgroundFetchResult.Failed;
+    }
+  });
+} catch (e) {
+  // ignore if TaskManager is unavailable
+}
 
 export async function registerBackgroundTask() {
   try {
