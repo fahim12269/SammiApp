@@ -4,7 +4,7 @@ import DashboardScreen from './src/screens/DashboardScreen';
 import AddEntryScreen from './src/screens/AddEntryScreen';
 import GoalSettingScreen from './src/screens/GoalSettingScreen';
 import CalendarScreen from './src/screens/CalendarScreen';
-import { Pressable, Text } from 'react-native';
+import { Pressable, Text, Platform } from 'react-native';
 import { useEffect } from 'react';
 import { performDailyRollover } from './src/services/rollover';
 import { registerBackgroundTask } from './src/services/background';
@@ -30,7 +30,9 @@ function HeaderRight({ navigation }) {
 export default function App() {
   useEffect(() => {
     performDailyRollover();
-    registerBackgroundTask();
+    if (Platform.OS !== 'web') {
+      registerBackgroundTask();
+    }
   }, []);
   return (
     <NavigationContainer>
