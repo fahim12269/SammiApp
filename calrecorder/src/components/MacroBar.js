@@ -15,4 +15,3 @@ export default function MacroBar({ label, value, goal, color }) {
   );
 }
 
-

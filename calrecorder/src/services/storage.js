@@ -26,5 +26,3 @@ export async function getGoals() {
 export async function setGoals(goals) {
   await AsyncStorage.setItem(STORAGE_KEYS.goals, JSON.stringify(goals));
 }
-
-

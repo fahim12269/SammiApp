@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Pressable, ScrollView } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import { spacing, radius } from '../styles/theme';
 import { getTodayMeals, setTodayMeals } from '../services/storage';
 
@@ -9,12 +10,13 @@ function MealRow({ meal, onChange }) {
   return (
     <View style={{ backgroundColor: '#fff', borderRadius: radius.md, padding: spacing.md, marginBottom: spacing.md }}>
       <Text style={{ fontWeight: '700', marginBottom: 8 }}>Meal</Text>
-      <TextInput
-        value={meal.type}
-        placeholder="Breakfast/Lunch/Snack/Dinner"
-        onChangeText={(t) => onChange({ ...meal, type: t })}
-        style={{ borderWidth: 1, borderColor: '#e5e7eb', borderRadius: 8, padding: 10, marginBottom: 8 }}
-      />
+      <View style={{ borderWidth: 1, borderColor: '#e5e7eb', borderRadius: 8, marginBottom: 8 }}>
+        <Picker selectedValue={meal.type} onValueChange={(v) => onChange({ ...meal, type: v })}>
+          {MEAL_TYPES.map((t) => (
+            <Picker.Item label={t} value={t} key={t} />
+          ))}
+        </Picker>
+      </View>
       <View style={{ flexDirection: 'row', gap: 10 }}>
         <TextInput keyboardType="numeric" placeholder="Protein" value={String(meal.protein || '')}
           onChangeText={(t) => onChange({ ...meal, protein: Number(t) || 0 })}
@@ -44,7 +46,6 @@ export default function AddEntryScreen() {
   useEffect(() => {
     (async () => {
       const stored = await getTodayMeals();
-      setMeals(stored);
     })();
   }, []);
 
@@ -78,5 +79,4 @@ export default function AddEntryScreen() {
     </ScrollView>
   );
 }
-
 

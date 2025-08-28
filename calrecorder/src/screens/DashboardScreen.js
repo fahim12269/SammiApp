@@ -20,7 +20,7 @@ function aggregateMeals(meals) {
   );
 }
 
-export default function DashboardScreen() {
+export default function DashboardScreen({ navigation }) {
   const [meals, setMeals] = useState([]);
   const [goals, setGoalsState] = useState({ calories: 0, protein: 0, fat: 0, carbs: 0, fiber: 0 });
 
@@ -31,6 +31,15 @@ export default function DashboardScreen() {
       setGoalsState(g);
     })();
   }, []);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', async () => {
+      const [m, g] = await Promise.all([getTodayMeals(), getGoals()]);
+      setMeals(m);
+      setGoalsState(g);
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   const totals = useMemo(() => aggregateMeals(meals), [meals]);
   const remaining = Math.max(goals.calories - totals.calories + totals.burned, 0);
@@ -93,5 +102,4 @@ export default function DashboardScreen() {
     </ScrollView>
   );
 }
-
 
