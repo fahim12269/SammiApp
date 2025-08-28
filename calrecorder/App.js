@@ -7,6 +7,7 @@ import CalendarScreen from './src/screens/CalendarScreen';
 import { Pressable, Text } from 'react-native';
 import { useEffect } from 'react';
 import { performDailyRollover } from './src/services/rollover';
+import { registerBackgroundTask } from './src/services/background';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,6 +30,7 @@ function HeaderRight({ navigation }) {
 export default function App() {
   useEffect(() => {
     performDailyRollover();
+    registerBackgroundTask();
   }, []);
   return (
     <NavigationContainer>
