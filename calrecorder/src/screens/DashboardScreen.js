@@ -1,7 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { View, Text, ScrollView } from 'react-native';
-import { VictoryPie } from 'victory-native';
-import Svg from 'react-native-svg';
 import { colors, spacing, radius } from '../styles/theme';
 import MacroBar from '../components/MacroBar';
 import { getTodayMeals, getGoals } from '../services/storage';
@@ -54,23 +52,29 @@ export default function DashboardScreen({ navigation }) {
             <Text style={{ color: colors.muted }}>Eaten</Text>
           </View>
 
-          <Svg width={180} height={160}>
-            <VictoryPie
-              standalone={false}
-              width={180}
-              height={160}
-              innerRadius={60}
-              startAngle={-90}
-              endAngle={270}
-              padAngle={2}
-              data={[{ x: 1, y: progress }, { x: 2, y: 1 - progress }]}
-              colorScale={[colors.primary, '#e6e6e6']}
-              labels={() => null}
-            />
-          </Svg>
-          <View style={{ position: 'absolute', top: 52, left: 0, right: 0, alignItems: 'center' }}>
-            <Text style={{ fontSize: 28, fontWeight: '800' }}>{Math.round(remaining)}</Text>
-            <Text style={{ color: colors.muted }}>Remaining</Text>
+          <View style={{ alignItems: 'center', width: 180 }}>
+            <View style={{ 
+              width: 120, 
+              height: 120, 
+              borderRadius: 60, 
+              backgroundColor: '#e6e6e6',
+              justifyContent: 'center',
+              alignItems: 'center',
+              position: 'relative'
+            }}>
+              <View style={{
+                position: 'absolute',
+                width: 120,
+                height: 120,
+                borderRadius: 60,
+                backgroundColor: colors.primary,
+                opacity: progress
+              }} />
+              <Text style={{ fontSize: 28, fontWeight: '800', color: '#fff', zIndex: 1 }}>
+                {Math.round(remaining)}
+              </Text>
+              <Text style={{ color: '#fff', fontSize: 12, zIndex: 1 }}>Remaining</Text>
+            </View>
           </View>
 
           <View style={{ alignItems: 'center', width: 70 }}>
