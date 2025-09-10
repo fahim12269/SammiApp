@@ -1,31 +1,14 @@
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import DashboardScreen from './src/screens/DashboardScreen';
 import AddEntryScreen from './src/screens/AddEntryScreen';
 import GoalSettingScreen from './src/screens/GoalSettingScreen';
 import CalendarScreen from './src/screens/CalendarScreen';
-import { Pressable, Text } from 'react-native';
 import { useEffect } from 'react';
 import { performDailyRollover } from './src/services/rollover';
 import { registerBackgroundTask } from './src/services/background';
 
-const Stack = createNativeStackNavigator();
-
-function HeaderRight({ navigation }) {
-  return (
-    <>
-      <Pressable onPress={() => navigation.navigate('Calendar')} style={{ marginRight: 14 }}>
-        <Text style={{ color: '#31c4b8', fontWeight: '700' }}>Calendar</Text>
-      </Pressable>
-      <Pressable onPress={() => navigation.navigate('Goals')} style={{ marginRight: 14 }}>
-        <Text style={{ color: '#31c4b8', fontWeight: '700' }}>Goals</Text>
-      </Pressable>
-      <Pressable onPress={() => navigation.navigate('Add')}>
-        <Text style={{ color: '#31c4b8', fontWeight: '700' }}>Add</Text>
-      </Pressable>
-    </>
-  );
-}
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   useEffect(() => {
@@ -34,14 +17,12 @@ export default function App() {
   }, []);
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Dashboard" component={DashboardScreen} options={({ navigation }) => ({
-          headerRight: () => <HeaderRight navigation={navigation} />
-        })} />
-        <Stack.Screen name="Add" component={AddEntryScreen} options={{ title: 'Add Entry' }} />
-        <Stack.Screen name="Goals" component={GoalSettingScreen} options={{ title: 'Goals' }} />
-        <Stack.Screen name="Calendar" component={CalendarScreen} options={{ title: 'Calendar' }} />
-      </Stack.Navigator>
+      <Tab.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
+        <Tab.Screen name="Dashboard" component={DashboardScreen} />
+        <Tab.Screen name="Calendar" component={CalendarScreen} options={{ title: 'Calendar' }} />
+        <Tab.Screen name="Goals" component={GoalSettingScreen} options={{ title: 'Goals' }} />
+        <Tab.Screen name="Add" component={AddEntryScreen} options={{ title: 'Add Entry' }} />
+      </Tab.Navigator>
     </NavigationContainer>
   );
 }
