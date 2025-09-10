@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Pressable, ScrollView } from 'react-native';
+import { View, Text, TextInput, Pressable, ScrollView, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { spacing, radius } from '../styles/theme';
 import { getTodayMeals, setTodayMeals } from '../services/storage';
@@ -42,10 +42,14 @@ function MealRow({ meal, onChange }) {
 
 export default function AddEntryScreen() {
   const [meals, setMeals] = useState([]);
+  const [savedMeals, setSavedMeals] = useState(null);
 
   useEffect(() => {
     (async () => {
       const stored = await getTodayMeals();
+      if (stored && Array.isArray(stored)) {
+        setMeals(stored);
+      }
     })();
   }, []);
 
@@ -61,6 +65,8 @@ export default function AddEntryScreen() {
 
   async function save() {
     await setTodayMeals(meals);
+    Alert.alert('Entry Saved', 'Your entry has been saved.');
+    setSavedMeals(meals);
   }
 
   return (
@@ -76,6 +82,22 @@ export default function AddEntryScreen() {
       <Pressable onPress={save} style={{ backgroundColor: '#31c4b8', padding: 14, borderRadius: 10, alignItems: 'center' }}>
         <Text style={{ color: '#fff', fontWeight: '800' }}>Save</Text>
       </Pressable>
+
+      {savedMeals && savedMeals.length > 0 && (
+        <View style={{ marginTop: spacing.lg }}>
+          <Text style={{ fontWeight: '800', marginBottom: 8 }}>Saved Entry</Text>
+          {savedMeals.map((m, i) => (
+            <View key={`saved-${i}`} style={{ backgroundColor: '#fff', borderRadius: radius.md, padding: spacing.md, marginBottom: spacing.sm }}>
+              <Text style={{ fontWeight: '700', marginBottom: 6 }}>{m.type}</Text>
+              <Text>Protein: {m.protein} g</Text>
+              <Text>Fat: {m.fat} g</Text>
+              <Text>Carbs: {m.carbs} g</Text>
+              <Text>Fiber: {m.fiber} g</Text>
+              <Text>Calories: {m.calories} kcal</Text>
+            </View>
+          ))}
+        </View>
+      )}
     </ScrollView>
   );
 }
