@@ -24,31 +24,36 @@ function Table({ date, meals, goals }) {
     { label: 'GOALS', bold: true, ...goals }
   ];
 
-  function Cell({ text, bold }) {
-    return <Text style={{ flex: 1, padding: 8, borderWidth: 1, borderColor: '#374151', color: '#fff', fontWeight: bold ? '800' : '400' }}>{text}</Text>;
+  const labelColumnWidth = 140;
+  const dataColumnWidth = 100;
+
+  function Cell({ text, bold, width }) {
+    return <Text style={{ width, padding: 8, borderWidth: 1, borderColor: '#374151', color: '#fff', fontWeight: bold ? '800' : '400' }}>{text}</Text>;
   }
 
   return (
-    <View style={{ marginTop: 12, borderWidth: 1, borderColor: '#374151' }}>
-      <View style={{ flexDirection: 'row', backgroundColor: '#111827' }}>
-        <Cell text={date} bold />
-        <Cell text={'Protein'} bold />
-        <Cell text={'Fat'} bold />
-        <Cell text={'Carbs'} bold />
-        <Cell text={'Fiber'} bold />
-        <Cell text={'Calories'} bold />
-      </View>
-      {rows.map((r, idx) => (
-        <View style={{ flexDirection: 'row', backgroundColor: '#1f2937' }} key={idx}>
-          <Cell text={r.label} bold={r.bold} />
-          <Cell text={String(r.protein || 0)} bold={r.bold} />
-          <Cell text={String(r.fat || 0)} bold={r.bold} />
-          <Cell text={String(r.carbs || 0)} bold={r.bold} />
-          <Cell text={String(r.fiber || 0)} bold={r.bold} />
-          <Cell text={String(r.calories || 0)} bold={r.bold} />
+    <ScrollView horizontal showsHorizontalScrollIndicator style={{ marginTop: 12 }} contentContainerStyle={{ borderWidth: 1, borderColor: '#374151' }}>
+      <View>
+        <View style={{ flexDirection: 'row', backgroundColor: '#111827' }}>
+          <Cell text={date} bold width={labelColumnWidth} />
+          <Cell text={'Protein'} bold width={dataColumnWidth} />
+          <Cell text={'Fat'} bold width={dataColumnWidth} />
+          <Cell text={'Carbs'} bold width={dataColumnWidth} />
+          <Cell text={'Fiber'} bold width={dataColumnWidth} />
+          <Cell text={'Calories'} bold width={dataColumnWidth} />
         </View>
-      ))}
-    </View>
+        {rows.map((r, idx) => (
+          <View style={{ flexDirection: 'row', backgroundColor: '#1f2937' }} key={idx}>
+            <Cell text={r.label} bold={r.bold} width={labelColumnWidth} />
+            <Cell text={String(r.protein || 0)} bold={r.bold} width={dataColumnWidth} />
+            <Cell text={String(r.fat || 0)} bold={r.bold} width={dataColumnWidth} />
+            <Cell text={String(r.carbs || 0)} bold={r.bold} width={dataColumnWidth} />
+            <Cell text={String(r.fiber || 0)} bold={r.bold} width={dataColumnWidth} />
+            <Cell text={String(r.calories || 0)} bold={r.bold} width={dataColumnWidth} />
+          </View>
+        ))}
+      </View>
+    </ScrollView>
   );
 }
 
