@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, Pressable, ScrollView } from 'react-native';
+import { View, Text, TextInput, Pressable, ScrollView, Alert } from 'react-native';
 import { spacing } from '../styles/theme';
 import { getGoals, setGoals } from '../services/storage';
 import { saveGoals, getGoalsRemote } from '../services/firestore';
@@ -22,6 +22,7 @@ export default function GoalSettingScreen() {
   async function save() {
     await setGoals(goals);
     await saveGoals(goals);
+    Alert.alert('Goals saved', 'Your goals have been saved.');
   }
 
   function renderInput(label, field) {
